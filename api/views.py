@@ -12,17 +12,15 @@ class MeetingListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated] # Ensure user is authenticated
 
     def get_queryset(self):
-        return Meeting.objects.filter(user=self.request.user)  # Only show user's meetings
+        return Meeting.objects.filter(author=self.request.user)  # Only show user's meetings
     
 
     def perform_create(self, serializer):
-        if serializer.is_valid():
-            # Automatically assign the user to the meeting
-            # This assumes the Meeting model has a ForeignKey to User
-            # If not, need to adjust the model accordingly
-            serializer.save(user=self.request.user)  # Auto-assign user
-        else:
-            print("Serializer errors:", serializer.errors)
+         serializer.save(author=self.request.user)  # Auto-assign user
+        
+           
+        
+           
 
 
 class MeetingDelete(generics.DestroyAPIView):
@@ -31,7 +29,7 @@ class MeetingDelete(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Meeting.objects.filter(user=self.request.user)
+        return Meeting.objects.filter(author=self.request.user)
 
 
 class CreateUserView(generics.CreateAPIView):

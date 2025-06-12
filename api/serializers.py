@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Meeting
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -16,9 +17,9 @@ class UserSerializer(serializers.ModelSerializer):
 class MeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
-        fields = ("id", "title", "datetime", "link", "google_drive_folder_id")
+        fields = ("id", "title", "datetime", "link", "google_drive_folder_id", "author", "email")
         extra_kwargs = {
-            "google_drive_folder_id": {"required": False}
+            "author": {"read_only": True}
         }
     
     # def create(self, validated_data):
